@@ -38,7 +38,7 @@ const banterLines = [
     "Don't worry, the RNG gods are watching.",
     "Another tails? Astonishing.",
     "Have you considered asking the coin nicely?",
-    "I bet your finger is getting tired."
+    "I bet your finger is getting tired.",
 	
 	// --- Dev Menu & Password Hints ---
     "Rumor has it there's a dev console... but you'd have to be some kind of hacker to get in.",
