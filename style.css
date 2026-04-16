@@ -10,7 +10,7 @@ body {
     font-family: 'Press Start 2P', cursive;
     color: var(--text-color);
     background-color: var(--tavern-dark);
-    overflow: hidden;
+    overflow: hidden; /* Kept for desktop so it doesn't double scroll */
 }
 
 .tavern-bg {
@@ -207,3 +207,70 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
 ::-webkit-scrollbar-thumb { background: #5c3a21; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #8b5a2b; }
+
+
+/* =========================================
+   MOBILE RESPONSIVENESS (Phones & Tablets)
+   ========================================= */
+@media (max-width: 800px) {
+    * {
+        box-sizing: border-box; 
+    }
+
+    body {
+        overflow-y: auto; 
+        overflow-x: hidden; 
+    }
+
+    .game-container {
+        flex-direction: column; 
+        height: auto; 
+        min-height: 100vh;
+        gap: 20px;
+        padding: 10px; 
+    }
+
+    .play-area, .upgrade-area {
+        flex: none; 
+        width: 100%;
+    }
+
+    .coin-container {
+        margin-top: 10px; 
+        margin-bottom: 20px;
+    }
+
+    .log-container {
+        height: 250px; 
+        flex-grow: 0;
+        margin-top: 20px;
+    }
+
+    /* Fix for the Upgrades header and Hide Maxed button */
+    .upgrade-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .upgrade-header .toggle-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .upgrade-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .upgrade-item button {
+        width: 100%; 
+        padding: 15px;
+    }
+
+    .modal {
+        width: 90%;
+        padding: 20px;
+    }
+}
