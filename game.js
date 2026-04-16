@@ -285,12 +285,15 @@ function renderUpgrades() {
         div.className = 'upgrade-item';
         div.innerHTML = `
             <div class="upgrade-info">
-                <strong>${upg.name} (Lv ${level}/${upg.maxLevel})</strong>
+                <div class="upgrade-title-row">
+                    <span class="level-badge">Lv ${level}/${upg.maxLevel}</span>
+                    <strong>${upg.name}</strong>
+                </div>
                 <p>${upg.desc}</p>
             </div>
-            <button ${(!canAfford || isMaxed) ? 'disabled' : ''} 
+            <button class="purchase-btn" ${(!canAfford || isMaxed) ? 'disabled' : ''} 
                     onclick="purchaseUpgrade('${upg.id}')">
-                ${isMaxed ? 'MAX' : cost + ' Coins'}
+                ${isMaxed ? 'MAX' : `${cost}<br><span class="coin-label">COINS</span>`}
             </button>
         `;
         container.appendChild(div);
