@@ -137,11 +137,21 @@ function flipCoin() {
     const duration = devMode ? 0 : Math.max(500, state.flipDuration);
 
     const coinInner = document.getElementById('coin-inner');
+    const coinScene = document.querySelector('.coin-scene');
     coinInner.style.transition = `transform ${duration}ms cubic-bezier(0.2, 0.8, 0.2, 1)`;
     
     state.flipCount++;
     const rotations = (state.flipCount * 1440) + (isHeads ? 0 : 180); 
-    coinInner.style.transform = `rotateY(${rotations}deg)`;
+    coinInner.style.transform = `rotateX(${rotations}deg)`;
+
+    if (duration > 0) {
+        coinScene.style.transition = `transform ${duration / 2}ms ease-out`;
+        coinScene.style.transform = 'translateY(-120px)';
+        setTimeout(() => {
+            coinScene.style.transition = `transform ${duration / 2}ms ease-in`;
+            coinScene.style.transform = 'translateY(0px)';
+        }, duration / 2);
+    }
 
     setTimeout(() => {
         resolveFlip(isHeads);
