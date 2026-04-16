@@ -39,6 +39,18 @@ const banterLines = [
     "Another tails? Astonishing.",
     "Have you considered asking the coin nicely?",
     "I bet your finger is getting tired."
+	
+	// --- Dev Menu & Password Hints ---
+    "Rumor has it there's a dev console... but you'd have to be some kind of hacker to get in.",
+    "Tired of flipping? I hear there's a Dev Menu button around here somewhere.",
+    "You probably have a better chance of a Mirror of Kalandra dropping than guessing the dev password.",
+    "The dev menu password? You'd have to be a haxor to figure that one out..",
+    "To open the dev menu, you must embrace your inner 90s internet troll.",
+    "I hear the dev password has exactly 6 characters. And one is a digit.",
+    "If you know how to 'Inspect Element', you might just find what you're looking for...",
+    "Are you trying to cheat? You'll need some serious hax to bypass the lock.",
+    "Dev access is strictly for the elite. The absolute haxores. Oh, did I spell that out loud?",
+    "A true hacker knows that sometimes 'o' is just a '0' in disguise."
 ];
 
 // Upgrades
@@ -362,6 +374,7 @@ document.getElementById('dev-cancel-btn').addEventListener('click', () => {
 
 document.getElementById('dev-submit-btn').addEventListener('click', () => {
     const pw = document.getElementById('dev-password-input').value;
+	//Oh so you want to cheat... go ahead.. give it a try... Surely the odds wont get worseee if you turn this on...
     if (pw === 'hax0re') {
         document.getElementById('dev-login-modal').classList.add('hidden');
         document.getElementById('dev-modal').classList.remove('hidden');
