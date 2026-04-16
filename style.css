@@ -208,6 +208,42 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 ::-webkit-scrollbar-thumb { background: #5c3a21; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #8b5a2b; }
 
+/* --- New Upgrade Formatting --- */
+.upgrade-title-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.level-badge {
+    background: #1a0d09;
+    color: var(--gold);
+    border: 1px solid #8b5a2b;
+    padding: 4px 6px;
+    font-size: 8px;
+    margin-right: 10px;
+    border-radius: 2px;
+    white-space: nowrap; /* Prevents the badge from wrapping weirdly */
+}
+
+.upgrade-info strong {
+    font-size: 12px; /* Bumped up from 10px */
+    line-height: 1.4;
+    color: var(--text-color); /* Just to ensure it stays bright */
+}
+
+.purchase-btn {
+    min-width: 100px; /* Keeps the buttons a consistent width */
+    text-align: center;
+}
+
+.coin-label {
+    display: inline-block;
+    margin-top: 6px; /* <-- Tweak this number to get the exact spacing you want! */
+    font-size: 8px;
+    color: #ccc;
+}
+
 
 /* =========================================
    MOBILE RESPONSIVENESS (Phones & Tablets)
