@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logi Flips</title>
+    <link rel="icon" href="data:image/svg+xml;utf8,%3Csvg viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='8' height='8' rx='4' fill='%23FFD700'/%3E%3Cg fill='%23333'%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='5' y='2' width='1' height='1'/%3E%3Crect x='1' y='5' width='1' height='1'/%3E%3Crect x='2' y='6' width='4' height='1'/%3E%3Crect x='6' y='5' width='1' height='1'/%3E%3C/g%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="tavern-bg"></div>
+    
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div id="win-modal" class="modal hidden">
+            <h2 class="gold-text">INCREDIBLE!</h2>
+            <p>You hit <span id="win-streak-display">10</span> heads in a row!</p>
+            <p id="win-flips-taken-container" style="color: #aaa; font-size: 10px; margin-top: 10px;">It took you <span id="win-flips-taken" class="gold-text">0</span> total flips to get here.</p>
+            <p style="color: #aaa; font-size: 10px; margin-top: 20px;">The odds are shifting...</p>
+            <p>Next Goal: <span id="next-goal-display" class="heads-text">12</span></p>
+            <button id="continue-btn" style="margin-top: 20px;">Keep Flipping</button>
+        </div>
+
+        <div id="dev-login-modal" class="modal hidden">
+            <h2 style="color: #dda0dd;">Dev Access</h2>
+            <p>Enter Password:</p>
+            <input type="password" id="dev-password-input" class="retro-input" placeholder="***">
+            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+                <button id="dev-submit-btn">Enter</button>
+                <button id="dev-cancel-btn" class="danger">Cancel</button>
+            </div>
+            <p id="dev-error-msg" class="tails-text hidden" style="font-size: 10px; margin-top: 15px;">Access Denied</p>
+        </div>
+
+        <div id="dev-modal" class="modal hidden">
+            <h2 style="color: #dda0dd;">Dev Menu</h2>
+            <div class="dev-controls">
+                <button id="dev-insta-btn" class="toggle-btn">Insta-Flip: OFF</button>
+                <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
+                    <button onclick="addDevCoins(100)">+100 Coins</button>
+                    <button onclick="addDevCoins(1000)">+1000 Coins</button>
+                </div>
+            </div>
+            <button id="close-dev-btn" style="margin-top: 30px;">Close Menu</button>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="play-area">
+            <div class="stats">
+                <p>Coins: <span id="coin-count">0</span></p>
+                <p>Coin Value: <span id="coin-value-display">2</span></p>
+                <p>Chance: <span id="chance-display">10</span>%</p>
+                <p>Streak: <span id="streak-count">0</span>/<span id="streak-goal">10</span></p>
+                <p style="font-size: 10px; color: #aaa;">Flip Time: <span id="speed-display">2.0</span>s</p>
+            </div>
+            
+            <div class="coin-container">
+                <div class="coin-scene">
+                    <div id="coin-inner" class="coin-inner">
+                        <div class="coin-face coin-front"></div>
+                        <div class="coin-face coin-back"></div>
+                    </div>
+                </div>
+                <button id="flip-btn">FLIP COIN</button>
+            </div>
+
+            <div class="log-container">
+                <h3 class="log-title">Flip History</h3>
+                <div id="log-list"></div>
+            </div>
+        </div>
+
+        <div class="upgrade-area">
+            <div class="upgrade-header">
+                <h2>Upgrades</h2>
+                <button id="hide-maxed-btn" class="toggle-btn">Hide Maxed: OFF</button>
+            </div>
+            <div id="upgrade-list"></div>
+            
+            <div class="settings">
+                <button id="dev-menu-btn" class="dev-btn">Dev Menu</button>
+                <button id="mute-btn" class="toggle-btn">Sound: ON</button>
+                <button id="reset-btn" class="danger">Reset Progress</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
