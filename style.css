@@ -5,6 +5,10 @@
     --text-color: #f4d3a8;
 }
 
+* {
+    touch-action: manipulation;
+}
+
 body {
     margin: 0;
     font-family: 'Press Start 2P', cursive;
