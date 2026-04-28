@@ -11,6 +11,9 @@ body {
     color: var(--text-color);
     background-color: var(--tavern-dark);
     overflow: hidden; /* Kept for desktop so it doesn't double scroll */
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .tavern-bg {
