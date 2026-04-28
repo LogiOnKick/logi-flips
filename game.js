@@ -9,7 +9,8 @@ let state = {
     consecutiveTails: 0,
     flipCount: 0, 
     muted: false,
-    purchasedUpgrades: {} 
+    purchasedUpgrades: {},
+    autoFlipOn: false
 };
 
 let isFlipping = false;
@@ -55,6 +56,7 @@ const banterLines = [
 
 // Upgrades
 const upgradeConfig = [
+    { id: "auto_flip", name: "Auto Flip", desc: "Automatically flips the coin for you. Button toggles ON/OFF.", baseCost: 10, costMultiplier: 1, maxLevel: 1 },
     { id: "chance_up", name: "Weighted Edge", desc: "Adds +5% base chance to hit heads.", baseCost: 10, costMultiplier: 2.5, maxLevel: 10, applyEffect: (level) => { state.baseChance += (level * 0.05); } },
     { id: "coin_value", name: "Exalted Value", desc: "Increases the base coins gained from heads by 1.", baseCost: 25, costMultiplier: 1.8, maxLevel: 15, applyEffect: (level) => { state.baseCoinValue += level; } },
     { id: "flip_speed", name: "Quick Fingers", desc: "Reduces flip time by 0.15s.", baseCost: 40, costMultiplier: 2, maxLevel: 10, applyEffect: (level) => { state.flipDuration -= (level * 150); } },
@@ -157,6 +159,7 @@ function flipCoin() {
         resolveFlip(isHeads);
         isFlipping = false;
         document.getElementById('flip-btn').disabled = false;
+        checkAutoFlip();
     }, duration);
 }
 
@@ -258,6 +261,32 @@ function purchaseUpgrade(id) {
         recalculateStats();
         saveGame();
         updateUI();
+        if (id === "auto_flip") {
+            state.autoFlipOn = true;
+            saveGame();
+            renderUpgrades();
+            checkAutoFlip();
+        }
+    }
+}
+
+function toggleAutoFlip() {
+    state.autoFlipOn = !state.autoFlipOn;
+    saveGame();
+    renderUpgrades();
+    checkAutoFlip();
+}
+
+function checkAutoFlip() {
+    if (state.autoFlipOn && state.purchasedUpgrades["auto_flip"] >= 1) {
+        if (!isFlipping && 
+            document.getElementById('win-modal').classList.contains('hidden') && 
+            document.getElementById('dev-modal').classList.contains('hidden') && 
+            document.getElementById('dev-login-modal').classList.contains('hidden')) {
+            setTimeout(() => {
+                if (!isFlipping) flipCoin();
+            }, 50);
+        }
     }
 }
 
@@ -298,26 +327,43 @@ function renderUpgrades() {
         const level = state.purchasedUpgrades[upg.id] || 0;
         const isMaxed = level >= upg.maxLevel;
         
-        if (hideMaxed && isMaxed) return;
+        if (hideMaxed && isMaxed && upg.id !== "auto_flip") return;
 
         const cost = Math.floor(upg.baseCost * Math.pow(upg.costMultiplier, level));
         const canAfford = state.coins >= cost;
 
         const div = document.createElement('div');
         div.className = 'upgrade-item';
-        div.innerHTML = `
-            <div class="upgrade-info">
-                <div class="upgrade-title-row">
-                    <span class="level-badge">Lv ${level}/${upg.maxLevel}</span>
-                    <strong>${upg.name}</strong>
+
+        if (upg.id === "auto_flip" && isMaxed) {
+            const isOn = state.autoFlipOn;
+            div.innerHTML = `
+                <div class="upgrade-info">
+                    <div class="upgrade-title-row">
+                        <span class="level-badge">MAX</span>
+                        <strong>${upg.name}</strong>
+                    </div>
+                    <p>${upg.desc}</p>
                 </div>
-                <p>${upg.desc}</p>
-            </div>
-            <button class="purchase-btn" ${(!canAfford || isMaxed) ? 'disabled' : ''} 
-                    onclick="purchaseUpgrade('${upg.id}')">
-                ${isMaxed ? 'MAX' : `${cost}<br><span class="coin-label">COINS</span>`}
-            </button>
-        `;
+                <button class="purchase-btn ${isOn ? 'active' : ''}" style="background: ${isOn ? '#8b5a2b' : '#5c3a21'}" onclick="toggleAutoFlip()">
+                    ${isOn ? 'ON' : 'OFF'}
+                </button>
+            `;
+        } else {
+            div.innerHTML = `
+                <div class="upgrade-info">
+                    <div class="upgrade-title-row">
+                        <span class="level-badge">Lv ${level}/${upg.maxLevel}</span>
+                        <strong>${upg.name}</strong>
+                    </div>
+                    <p>${upg.desc}</p>
+                </div>
+                <button class="purchase-btn" ${(!canAfford || isMaxed) ? 'disabled' : ''} 
+                        onclick="purchaseUpgrade('${upg.id}')">
+                    ${isMaxed ? 'MAX' : `${cost}<br><span class="coin-label">COINS</span>`}
+                </button>
+            `;
+        }
         container.appendChild(div);
     });
 }
@@ -367,6 +413,7 @@ document.getElementById('continue-btn').addEventListener('click', () => {
     updateUI();
     document.getElementById('win-modal').classList.add('hidden');
     document.getElementById('modal-overlay').classList.add('hidden');
+    checkAutoFlip();
 });
 
 // Password & Dev Menu Logic
@@ -380,6 +427,7 @@ document.getElementById('dev-cancel-btn').addEventListener('click', () => {
     document.getElementById('modal-overlay').classList.add('hidden');
     document.getElementById('dev-password-input').value = '';
     document.getElementById('dev-error-msg').classList.add('hidden');
+    checkAutoFlip();
 });
 
 document.getElementById('dev-submit-btn').addEventListener('click', () => {
@@ -403,6 +451,7 @@ document.getElementById('dev-password-input').addEventListener('keypress', funct
 document.getElementById('close-dev-btn').addEventListener('click', () => {
     document.getElementById('dev-modal').classList.add('hidden');
     document.getElementById('modal-overlay').classList.add('hidden');
+    checkAutoFlip();
 });
 
 function addDevCoins(amount) {
